@@ -1,0 +1,124 @@
+# Test Result
+
+Generated: 2026-09-22
+Project: Dark Coders — Cybersecurity Operations Platform
+Build under test: production build (`npm run build` → `npm run start`, port 5555)
+
+---
+
+## Automated test suite
+
+**NOT PRESENT.** The project ships no unit, integration or E2E test suite and no test
+runner is installed. `package.json` has no `test` script.
+
+This is a factual statement, not a hidden failure. See `docs/TESTING.md` for a
+recommended test strategy and `docs/TODO.md` item #1.
+
+---
+
+## Quality gates (all PASS)
+
+| Gate | Command | Exit | Result |
+| --- | --- | --- | --- |
+| Install | `npm ci` | 0 | PASS — 404 packages, 0 vulnerabilities |
+| Lint | `npm run lint` | 0 | PASS — no output |
+| Typecheck | `npm run typecheck` | 0 | PASS — no output |
+| Build | `npm run build` | 0 | PASS — compiled successfully, 7 routes |
+| Audit | `npm audit` | 0 | PASS — 0 vulnerabilities |
+| Start | `npm run start` | 0 | PASS — ready in 74 ms on :5555 |
+| Health | `GET /api/health` | 200 | PASS — `{"status":"ok",…}` |
+| Home | `GET /` | 200 | PASS — 394 036 bytes in 0.111 s |
+| Robots | `GET /robots.txt` | 200 | PASS |
+| Sitemap | `GET /sitemap.xml` | 200 | PASS |
+| Security headers | `GET /` | — | PASS — CSP, HSTS, nosniff, DENY, referrer, permissions |
+
+Raw output: `docs/verification/build-result.txt`.
+
+---
+
+## Content assertions (production HTML)
+
+| Assertion | Expected | Observed | Result |
+| --- | --- | --- | --- |
+| Hero headline present | ≥1 | 1 | PASS |
+| Tagline present | ≥1 | 1 | PASS |
+| Global Threat section present | ≥1 | 1 | PASS |
+| `Organization` JSON-LD present | ≥1 | 1 | PASS |
+| `<html dir>` | `ltr` (default locale) | `dir="ltr"` | PASS |
+
+---
+
+## Browser interaction tests (headless Chromium via DevTools Protocol)
+
+Executed against the production build. Method: navigate, click/type via
+`Runtime.evaluate`, assert resulting DOM state.
+
+| # | Test | Observed | Result |
+| --- | --- | --- | --- |
+| 1 | Dashboard tab list rendered | 11 tabs | PASS |
+| 2 | Click "Threats" tab | 12 table rows | PASS |
+| 3 | Click "Critical" severity filter | 4 rows (narrowed) | PASS |
+| 4 | Copilot quick action "Summarize today's threats" | assistant reply containing "critical incidents" | PASS |
+| 5 | Search button opens dialog | `role="dialog"` present | PASS |
+| 6 | Type "compliance" in search | 3 results | PASS |
+| 7 | Header "Start Free Trial" | auth modal opened | PASS |
+| 8 | Submit empty auth form | validation errors (`role="alert"`) | PASS |
+| 9 | `Escape` closes modal | modal removed | PASS |
+| 10 | Newsletter empty submit | `#newsletter-error` rendered | PASS |
+| 11 | Integrations tab | 12 `aria-pressed` toggles | PASS |
+| 12 | Switch language to العربية | `dir="rtl"`, `lang="ar"` | PASS |
+| 13 | Console errors after interactions | none | PASS |
+
+Result: **13/13 PASS.**
+
+---
+
+## Responsive sweep
+
+13 viewport widths tested (320 → 2560 px): `scrollWidth === innerWidth` at every width.
+**13/13 PASS.** Details in `docs/RESPONSIVE.md` and `docs/QA-REPORT.md`.
+
+---
+
+## Reproduction test
+
+Performed on a clean copy of the packaged source:
+
+```
+cp -R <package>/source repro-clean/
+cd repro-clean
+npm ci            # PASS (404 packages)
+npm run lint      # PASS
+npm run typecheck # PASS
+npm run build     # PASS
+npm run start     # PASS (port 5555)
+curl /api/health  # PASS
+```
+
+Result: **PASS.**
+
+---
+
+## Not tested
+
+| Item | Status | Reason |
+| --- | --- | --- |
+| Automated unit/E2E tests | NOT TESTED | No suite exists |
+| Docker build/run | NOT TESTED | No Docker daemon on the packaging machine |
+| Cross-browser (Firefox/Safari/Edge) | NOT TESTED | Chromium only |
+| Screen reader (NVDA/JAWS/VoiceOver) | NOT TESTED | ARIA implemented, not auditor-verified |
+| Lighthouse performance | NOT TESTED | No run performed |
+| Load/stress | NOT TESTED | Out of scope |
+
+---
+
+## Summary
+
+| Category | Result |
+| --- | --- |
+| Quality gates | PASS (11/11) |
+| Content assertions | PASS (5/5) |
+| Browser interactions | PASS (13/13) |
+| Responsive widths | PASS (13/13) |
+| Reproduction | PASS |
+| Automated tests | NOT PRESENT |

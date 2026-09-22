@@ -2,10 +2,10 @@
 
 > **Hunt In The Darkness!**
 
-Production-grade marketing and platform-preview website for **Dark Coders**, a global
-cybersecurity operations platform covering threat intelligence, SOC, SIEM, SOAR, GRC,
-compliance, Zero Trust, IAM, AI security, incident response, sovereign infrastructure
-and security research.
+Production-grade marketing and interactive platform-preview website for **Dark Coders**,
+a global cybersecurity operations platform covering threat intelligence, SOC, SIEM, SOAR,
+GRC, compliance, Zero Trust, IAM, AI security, incident response, sovereign
+infrastructure and security research.
 
 Built with **Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS v4 ·
 Framer Motion · Recharts · Zod · Lucide**.
@@ -15,174 +15,122 @@ Framer Motion · Recharts · Zod · Lucide**.
 ## Quick start
 
 ```bash
-npm install
-npm run dev        # http://localhost:5555
+git clone https://github.com/eimnir-wq/darkcoders.git
+cd darkcoders
+
+nvm use            # Node 22.23.2 (see .nvmrc)
+npm ci             # install from the lockfile
+cp .env.example .env.local
+
+npm run dev        # → http://localhost:5555
 ```
 
-The application **always runs on port 5555** (`dev` and `start` scripts are pinned).
+The application **always runs on port 5555** (`dev` and `start` are pinned with `-p 5555`).
+
+Health check: <http://localhost:5555/api/health> → `{"status":"ok", ...}`
 
 ### Scripts
 
-| Script              | Description                              |
-| ------------------- | ---------------------------------------- |
-| `npm run dev`       | Development server on port 5555          |
-| `npm run build`     | Production build                         |
-| `npm run start`     | Production server on port 5555           |
-| `npm run lint`      | ESLint (Next.js core-web-vitals + TS)    |
-| `npm run typecheck` | TypeScript project check (`tsc --noEmit`)|
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Development server on port 5555 |
+| `npm run build` | Production build |
+| `npm run start` | Production server on port 5555 |
+| `npm run lint` | ESLint (Next.js core-web-vitals + TypeScript) |
+| `npm run typecheck` | TypeScript project check (`tsc --noEmit`) |
+
+> There is no `test` script — the project ships no automated test suite.
+> See [`docs/TESTING.md`](docs/TESTING.md) and [`docs/QA-REPORT.md`](docs/QA-REPORT.md).
+
+---
+
+## What this is
+
+A single-page site with one API route, presenting:
+
+- Enterprise cybersecurity positioning (Threat Intelligence, SOC, SIEM, SOAR, GRC,
+  Compliance, Zero Trust, IAM, AI Security, Incident Response, Sovereign Infrastructure)
+- A live-looking threat intelligence panel backed by **deterministic simulated data**
+- A rotating 3D dot-matrix threat globe (custom SVG orthographic projection)
+- A global threat map built from **real Natural Earth geographic data**
+- A compliance framework grid (11 frameworks) + an **AI Security Copilot**
+- An interactive **11-tab security operations dashboard** with charts and a MITRE ATT&CK heatmap
+- **13-language internationalization** including full **RTL Arabic** support
+
+---
+
+## Documentation
+
+Full engineering documentation lives in [`docs/`](docs/INDEX.md):
+
+| Document | Purpose |
+| --- | --- |
+| [docs/INDEX.md](docs/INDEX.md) | Documentation index (start here) |
+| [docs/INSTALLATION.md](docs/INSTALLATION.md) | Install and run on a fresh machine |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Architecture, layering, data flow |
+| [docs/TECHNOLOGY-STACK.md](docs/TECHNOLOGY-STACK.md) | Exact versions used |
+| [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) | Local workflow and conventions |
+| [docs/PROJECT-STRUCTURE.md](docs/PROJECT-STRUCTURE.md) | Annotated repository layout |
+| [docs/DESIGN-SYSTEM.md](docs/DESIGN-SYSTEM.md) | Tokens, typography, components |
+| [docs/COMPONENT-CATALOG.md](docs/COMPONENT-CATALOG.md) | Component reference |
+| [docs/I18N.md](docs/I18N.md) | Localization and RTL |
+| [docs/RESPONSIVE.md](docs/RESPONSIVE.md) | Breakpoints and responsive behaviour |
+| [docs/SECURITY.md](docs/SECURITY.md) | Implemented security controls |
+| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | Node + Docker deployment |
+| [docs/QA-REPORT.md](docs/QA-REPORT.md) | QA results |
+| [docs/HANDOVER.md](docs/HANDOVER.md) | Working / partial / not implemented |
+| [docs/TODO.md](docs/TODO.md) | Remaining work |
+
+---
+
+## Screenshots
+
+| Desktop | Mobile |
+| --- | --- |
+| ![Homepage](docs/screenshots/desktop/01-homepage-full.png) | ![Mobile](docs/screenshots/mobile/02-hero.png) |
+
+More in [`docs/screenshots/`](docs/screenshots/) (desktop · tablet · mobile).
 
 ---
 
 ## Environment
 
-Copy `.env.example` → `.env.local`. No secret is ever required to run the site —
-every external integration falls back to a deterministic local mock service.
+Copy `.env.example` → `.env.local`. **No secret is required to run the site** — every
+external integration falls back to a deterministic local mock service.
 
-Key variables:
-
-- `NEXT_PUBLIC_SITE_URL` — canonical URL used by metadata, sitemap and robots.
-- `PORT` — defaults to `5555`.
-- Optional: `DATABASE_URL`, `AUTH_*` (Keycloak/Entra/Okta), `SIEM_*`, `SOAR_*`,
-  `THREAT_FEED_API_KEY`, `MINIO_*`, `AI_PROVIDER_*`, `RATE_LIMIT_*`.
+Key variables: `NEXT_PUBLIC_SITE_URL`, `PORT`. Optional integration variables
+(`DATABASE_URL`, `AUTH_*`, `SIEM_*`, `SOAR_*`, `THREAT_FEED_API_KEY`, `MINIO_*`,
+`AI_PROVIDER_*`, `RATE_LIMIT_*`) are documented in the template and are all empty by
+design. See [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md).
 
 ---
 
 ## Docker
 
 ```bash
-docker compose up --build
-# → http://localhost:5555
+docker compose up --build      # → http://localhost:5555
 ```
 
-- `Dockerfile` — multi-stage production image exposing `5555`.
-- `docker-compose.yml` — service `web`, port `5555:5555`, healthcheck on `/api/health`.
-- `docker-compose.yml` reads `.env` when present.
-
-Health endpoint:
-
-```bash
-curl http://localhost:5555/api/health
-# {"status":"ok","service":"dark-coders-web", ...}
-```
+`Dockerfile` (multi-stage, port 5555, healthcheck) and `docker-compose.yml` are provided.
+> The image has **not** been executed in CI — validate it in your environment.
 
 ---
 
-## Architecture
+## Status
 
-```
-src/
-  app/                     App Router — layout, page, metadata, robots, sitemap, API
-    api/health/route.ts    Health probe
-  components/
-    layout/                SiteHeader, SiteFooter, SearchDialog, LanguageSwitcher, SkipLink
-    providers/             AppModals (auth + search orchestration)
-    ui/                    Design-system primitives (Button, Badge, Modal, Field, Toast, …)
-  config/                  Navigation + search index configuration
-  data/                    Deterministic mock data + generated world dot-matrix map
-  features/
-    ai-copilot/            Security query engine + Copilot UI
-    architecture/          Security pipeline flow
-    auth/                  Login / trial / demo modal
-    capabilities/          Core platform capability cards
-    compliance/            Framework tiles + compliance section
-    cta/                   Final call to action
-    dashboard/             Interactive platform preview (11 tabs, charts, MITRE)
-    forms/                 Zod validation schemas
-    hero/                  Hero, rotating threat globe, live intelligence panel
-    scale/                 Global scale section
-    threat-intelligence/   World threat map + top-threats panel
-    trust/                 Industry trust section
-  hooks/                   useInView, useCountUp, useLiveFeed, useMotionPreference
-  i18n/                    13 locales, RTL, persistence, provider, server helpers
-  lib/                     Utilities (cn, formatters, severity tokens)
-  services/                Repositories (Threat, Incident, Compliance, Asset, …)
-  types/                   Typed domain models
-  proxy.ts                 Locale detection + cookie (Next.js proxy convention)
-```
+| Gate | Result |
+| --- | --- |
+| Lint | PASS |
+| Typecheck | PASS |
+| Production build | PASS |
+| Dev + production server (5555) | PASS |
+| `/api/health` | PASS |
+| Automated tests | NOT PRESENT (none exist) |
+| Docker | Files present, not executed |
 
-### Data layer
-
-The UI never hardcodes domain arrays. It consumes **repositories** in
-`src/services/repositories.ts`, which read from a **deterministic** mock dataset in
-`src/data/mock.ts` (seeded `mulberry32` PRNG + fixed reference instant → stable across
-SSR, hydration and tests — never `Math.random()` in render paths).
-
-Domain models in `src/types/domain.ts`: `Threat`, `Incident`, `IOC`, `Asset`,
-`Identity`, `ComplianceFramework`, `Control`, `Evidence`, `Risk`, `Alert`,
-`SecurityEvent`, `ThreatFeed`, `AIQuery`, plus dashboard/geo types.
-
-### AI Security Copilot
-
-`src/features/ai-copilot/engine.ts` implements a local query engine:
-
-```
-Copilot UI → Security Query Engine → Repositories (mock data) → Response Generator
-```
-
-Intents: threat summary, top risks, compliance status, incident report, identity
-posture, asset posture, feed coverage, matched threat (ransomware/phishing/malware/
-C2/DDoS/exploit/exfiltration/credential/cloud/insider), plus a grounded fallback.
-Responses are generated in the active locale with graceful English fallback.
-
-### Internationalization
-
-- 13 locales: `en fr ar es de pt it nl tr zh ja ko ru`.
-- No UI string is hardcoded in components — all copy resolves through dictionaries.
-- Arabic is fully RTL (`dir="rtl"`, mirrored layout, Noto Sans Arabic).
-- Language is persisted in `localStorage` **and** a cookie; the server reads the
-  cookie in `proxy.ts` for first paint; browser language is auto-detected.
-- Adding a language = add one dictionary file + one entry in `src/i18n/config.ts`.
-
-### Design system
-
-CSS custom properties (`--dc-*`) drive the brand: black `#050807`, dark graphite
-surfaces, neon green `#00FF88` ramp, plus semantic security states
-(critical/high/medium/low/info) used **only** for status — never as brand colour.
-Reusable classes: `dc-card`, `dc-panel`, `dc-chip`, `dc-label`, `dc-grid-bg`,
-`dc-text-glow`, `dc-hairline`.
-
-### Accessibility
-
-Skip link, semantic landmarks, ARIA roles for tabs/dialogs/listbox/switch/progress,
-keyboard navigation (arrow keys for tabs, ESC to close overlays, focus trap in
-modals), visible focus rings, `prefers-reduced-motion` support, severity conveyed by
-glyph + text as well as colour.
-
-### Motion
-
-Framer Motion with a central `useMotionOK()` gate. When reduced motion is requested
-(or `NEXT_PUBLIC_REDUCED_MOTION=1` is set for kiosk/low-power/QA deployments) all
-scroll reveals render in their final state — content is never hidden.
-
-### Security
-
-- Zod validation on every form; no `dangerouslySetInnerHTML` for user input.
-- Security headers + CSP in `next.config.ts` (nosniff, DENY framing, referrer policy,
-  permissions policy, HSTS).
-- No secrets in client code; all configuration via environment variables.
-- API routes are `no-store`; health endpoint returns only non-sensitive data.
-
-### SEO
-
-Metadata + OpenGraph + Twitter cards, canonical URLs, `robots.txt`, `sitemap.xml`,
-`Organization` JSON-LD, per-locale `hreflang` alternates.
+Full detail: [`docs/QA-REPORT.md`](docs/QA-REPORT.md) · [`docs/HANDOVER.md`](docs/HANDOVER.md).
 
 ---
-
-## QA checklist
-
-- [x] `npm run lint` clean
-- [x] `npm run typecheck` clean
-- [x] `npm run build` succeeds
-- [x] `npm run start` serves http://localhost:5555
-- [x] `/api/health` → `{"status":"ok"}`
-- [x] No console errors (verified in headless Chrome, including interactions)
-- [x] Desktop / tablet / mobile (390px) layouts, no horizontal overflow
-- [x] RTL Arabic verified (`dir="rtl"`, `lang="ar"`)
-- [x] Dashboard tabs, filters, charts, MITRE heatmap
-- [x] Copilot quick actions + free-text queries
-- [x] Search dialog, auth modal (validation + ESC), newsletter validation
-- [x] Integration toggles, settings switches, language switching
 
 ## License
 

@@ -1,0 +1,107 @@
+# Build & Reproduction Result
+# Generated: 2026-09-22T19:42:27Z
+# Procedure: copy packaged source -> npm ci -> lint -> typecheck -> build -> start -> verify
+# Node v22.23.2 / npm 10.9.8
+
+==================== npm ci ====================
+npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+
+added 404 packages, and audited 405 packages in 6s
+
+149 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+npm ci exit: 0
+
+==================== npm run lint ====================
+
+> dark-coders@1.0.0 lint
+> eslint
+
+lint exit: 0
+
+==================== npm run typecheck ====================
+
+> dark-coders@1.0.0 typecheck
+> tsc --noEmit
+
+typecheck exit: 0
+
+==================== npm run build ====================
+
+> dark-coders@1.0.0 build
+> next build
+
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.ts took 2.2s
+- Experiments (use with caution):
+  · optimizePackageImports
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 4.3s
+  Running TypeScript ...
+  Finished TypeScript in 2.2s ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/7) ...
+  Generating static pages using 7 workers (1/7) 
+  Generating static pages using 7 workers (3/7) 
+  Generating static pages using 7 workers (5/7) 
+✓ Generating static pages using 7 workers (7/7) in 110ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /api/health
+├ ○ /apple-icon.png
+├ ○ /icon.png
+├ ○ /robots.txt
+└ ○ /sitemap.xml
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+build exit: 0
+
+==================== npm audit ====================
+found 0 vulnerabilities
+==================== npm run start ====================
+
+> dark-coders@1.0.0 start
+> next start -p 5555
+
+▲ Next.js 16.3.5
+- Local:         http://localhost:5555
+- Network:       http://172.20.10.10:5555
+✓ Ready in 74ms
+✓ Running next.config.ts took 17ms
+
+==================== runtime verification ====================
+GET /api/health:
+{"status":"ok","service":"dark-coders-web","version":"1.0.0","timestamp":"2026-09-22T19:43:19.375Z","uptimeSeconds":9}
+
+GET / :
+  http_code=200  bytes=394036  time=0.111252s
+GET /robots.txt:
+  http_code=200
+GET /sitemap.xml:
+  http_code=200
+
+Content assertions (expected 1 each):
+  'See the Threats'      -> 1
+  'Hunt In The Darkness' -> 1
+  'Global Threat'        -> 1
+  Organization JSON-LD   -> 1
+  dir attribute          -> dir="ltr"
+
+Security headers (GET /):
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), browsing-topics=()
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload

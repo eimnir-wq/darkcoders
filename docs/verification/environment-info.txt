@@ -1,0 +1,38 @@
+# Environment Information
+# Generated: 2026-09-22T19:42:17Z
+
+## Packaging machine
+OS:            macOS 26.6.1 (build 25G76)
+Architecture:  arm64
+Kernel:        Darwin 25.6.0
+Node:          v22.23.2
+npm:           10.9.8
+git:           git version 2.50.1 (Apple Git-155)
+
+## Project runtime requirements
+Node (required): 22.x  (verified on v22.23.2)
+npm (required):  10.x  (verified on 10.9.8)
+Package manager: npm (lockfileVersion 3)
+Port:            5555
+
+## Installed dependency versions (from lockfile)
+@tailwindcss/postcss         4.3.3
+@types/node                  20.19.43
+@types/react                 19.3.0
+@types/react-dom             19.3.0
+clsx                         2.1.1
+eslint                       9.39.5
+eslint-config-next           16.3.5
+framer-motion                13.4.0
+lucide-react                 1.47.0
+next                         16.3.5
+react                        19.2.8
+react-dom                    19.2.8
+recharts                     3.10.1
+tailwind-merge               3.7.0
+tailwindcss                  4.3.3
+typescript                   5.9.3
+zod                          4.6.5
+
+## .nvmrc
+22.23.2
